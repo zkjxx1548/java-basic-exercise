@@ -2,6 +2,7 @@
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -20,6 +21,15 @@ public class GrammarExercise {
         //在这编写实现代码
         String[] firstArr = firstWordList.split(",");
         String[] secondArr = secondWordList.split(",");
+        Stream<String> allWordStream = Stream.concat(Arrays.stream(firstArr), Arrays.stream(secondArr));
+        if (Arrays.asList(firstArr).contains("") || Arrays.asList(secondArr).contains("")) {
+            throw new InvalidInputException();
+        }
+        if (!allWordStream
+                .map(s -> Arrays.stream(s.split("")))
+                .allMatch(stringStream -> stringStream.allMatch(s -> (s.charAt(0) <= 90 && s.charAt(0) >= 65) || (s.charAt(0) >= 97 && s.charAt(0) <= 122)))) {
+            throw new InvalidInputException();
+        }
         return Arrays.stream(firstArr)
                 .distinct()
                 .map(String::toUpperCase)
